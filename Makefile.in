@@ -1,0 +1,79 @@
+################################################################################
+## qHttpd - http://www.qdecoder.org
+##
+## Copyright (c) 2008-2012 Seungyoung Kim.
+## All rights reserved.
+##
+## Redistribution and use in source and binary forms, with or without
+## modification, are permitted provided that the following conditions are met:
+##
+## 1. Redistributions of source code must retain the above copyright notice,
+##    this list of conditions and the following disclaimer.
+## 2. Redistributions in binary form must reproduce the above copyright notice,
+##    this list of conditions and the following disclaimer in the documentation
+##    and/or other materials provided with the distribution.
+##
+## THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+## AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+## IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+## ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+## LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+## CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+## SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+## INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+## CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+## ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+## POSSIBILITY OF SUCH DAMAGE.
+################################################################################
+## $Id: Makefile.in 216 2012-05-07 21:01:37Z seungyoung.kim $
+################################################################################
+
+prefix		= @prefix@
+
+RM		= @RM@
+
+all:
+	@for DIR in lib src; do \
+		echo "===> $${DIR}"; \
+		(cd $${DIR}; make all); \
+		echo "<=== $${DIR}"; \
+	done
+
+install: all
+	install -d ${prefix}
+	install -d ${prefix}/sbin
+	install -m 0755 sbin/qhttpd ${prefix}/sbin/qhttpd
+	install -d ${prefix}/conf
+	install -m 0644 conf/qhttpd.conf.dist ${prefix}/conf/qhttpd.conf.dist
+	install -m 0644 conf/mimetypes.conf ${prefix}/conf/mimetypes.conf
+	install -m 0644 conf/qhttpd.lua.dist ${prefix}/conf/qhttpd.lua.dist
+	install -d ${prefix}/htdocs
+	install -m 0644 htdocs/index.html ${prefix}/htdocs/index.html
+	install -d ${prefix}/logs
+
+deinstall: uninstall
+uninstall:
+	${RM} -f ${prefix}/sbin/qhttpd
+	${RM} -f ${prefix}/conf/qhttpd.conf.dist
+	${RM} -f ${prefix}/conf/mimetypes.conf
+	${RM} -f ${prefix}/conf/qhttpd.lua.dist
+	${RM} -f ${prefix}/htdocs/index.html
+
+clean:
+	@for DIR in lib src; do \
+		echo "===> $${DIR}"; \
+		(cd $${DIR}; make clean); \
+		echo "<=== $${DIR}"; \
+	done
+
+distclean: clean
+	@for DIR in lib src; do \
+		echo "===> $${DIR}"; \
+		(cd $${DIR}; make distclean); \
+		echo "<=== $${DIR}"; \
+	done
+	${RM} -f Makefile
+	${RM} -f sbin/qhttpd
+	${RM} -rf autom4te.cache
+	${RM} -f configure.lineno config.log config.status config.h
+

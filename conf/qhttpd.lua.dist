@@ -1,0 +1,119 @@
+--=============================================================================
+-- This script will be loaded everytime each childs launched.
+-- And once it is loaded, it will be used until child terminated.
+--
+-- So it is possible that storing request information or some of your
+-- informations to temporary global variable in the requestHandler()
+-- then using stored information in responseHandler().
+--
+-- This script is called sequencially so race condition does not occured.
+--
+-- * Supported functions
+--   + [http] functions
+--	string	http:getRemoteAddr()		: returns remote IP address as string
+--	number	http:getRemotePort()		: returns remote port as integer
+--
+--   + [request] functions
+--	table	request:getRequest()		: get request information table
+--	boolean	request:setRequest(request_table) : set/modify request information
+--	string	request:getHeader(name)		: get request header
+--	boolean	request:setHeader(name, value)	: set request header
+--	boolean	request:delHeader(name)		: remove request header
+--
+--   + [response] functions
+--	number	response:getCode()		: get response code
+--	boolean	response:setCode()		: set response code
+--	boolean	response:setContent(mimetype, content) : set response content
+--	string	response:getHeader(name)	: get response header
+--	boolean	response:setHeader(name, value)	: set requresponseest header
+--	boolean	response:delHeader(name)	: remove response header
+--
+--   + control
+--	void	http:terminate()	: terminate this child after processing this session
+--
+-- * Data structure
+--   - request table = {requestMethod=, requestHost=, requestPath=, queryString= }
+--
+-- $Id: qhttpd.lua.dist 201 2011-01-21 03:31:22Z seungyoung.kim $
+--=============================================================================
+
+--=============================================================================
+-- Hook request - called after parsing request header
+-- @return	response code(number type)
+--
+-- If you return response code like 200, native method handler will not be called.
+-- So if want to continue routines (almost case), please return 0.
+--=============================================================================
+function requestHandler()
+
+	return 0;
+end
+
+--=============================================================================
+-- Hook response - called before responding out
+-- @return	response code(number type)
+--=============================================================================
+function responseHandler()
+
+	return 0;
+end
+
+--=============================================================================
+-- Initializing codes and global variables here
+--=============================================================================
+
+
+
+
+
+
+--=============================================================================
+-- SAMPLE: responding 200 with text/plain message immediately
+--=============================================================================
+--function requestHandler()
+--	nResCode = 200;
+--	http:setContent("text/plain", "hello world");
+--	return nResCode;
+--end
+--
+--=============================================================================
+-- SAMPLE : log request
+--=============================================================================
+--function requestHandler()
+--	local req = request:getRequest();
+--	if (req ~= nil) then
+--		out = assert(io.open("/tmp/lua.out", "a+"));
+--		out:write("req.requestMethod = ",req.requestMethod,"\n");
+--		out:write("req.requestHost = ",req.requestHost,"\n");
+--		out:write("req.requestPath = ",req.requestPath,"\n");
+--		out:write("req.queryString = ",req.queryString,"\n");
+--		out:write("Remote Addr = ",http:getRemoteAddr(),":",http:getRemotePort(),"\n");
+--		out:write("User-Agent = ", request:getHeader("USER-AGENT"),"\n");
+--		out:write("\n");
+--		out:close();
+--	end
+--
+--	return 0;
+--end
+--
+--=============================================================================
+-- SAMPLE : modifing respose header
+--=============================================================================
+--function responseHandler()
+--	local code = response:getCode();
+--
+--	out = assert(io.open("/tmp/lua.out", "a+"));
+--	out:write("Response Code = ",code,"\n");
+--	out:write("\n");
+--	out:close();
+--
+--	if (code == 200) then
+--		response:setHeader("Server", "milk/1.0.0");
+--	end
+--
+--	-- to re-load script for debugging purpose.
+--	-- must be comment out
+--	http:terminate()
+--
+--	return 0;
+--end

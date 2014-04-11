@@ -1,0 +1,91 @@
+##
+## This is the main qHttpd configuration file.  It contains the
+## configuration directives that give the server its instructions.
+## See <URL:http://www.qdecoder.org/> for detailed information.
+##
+## $Id: qhttpd.conf.dist 201 2011-01-21 03:31:22Z seungyoung.kim $
+
+## These are variables and not configuration mandatory entries.
+BaseDir			= /usr/local/qhttpd
+ConfDir			= ${BaseDir}/conf
+LogDir			= ${BaseDir}/logs
+RunDir			= /var/run
+
+## PidFile: The file in which the server should record its process
+## identification number when it starts.
+PidFile			= ${RunDir}/qhttpd.pid
+
+## MimeFile: The location of the mime-types file.
+MimeFile		= ${ConfDir}/mimetypes.conf
+
+## Port: listening port to serve.
+Port			= 80
+
+## StartServers:    number of server processes to start.
+## MinSpareServers: minimum number of server processes which are kept spare.
+## MaxSpareServers: maximum number of server processes which are kept spare.
+## MaxIdleSeconds:  maximum number of seconds which idle server process waits.
+## MaxClients:      maximum number of server processes allowed to start.
+## MaxRequestsPerChild: maximum number of requests a server process serves.
+StartServers		= 5
+MinSpareServers		= 3
+MaxSpareServers		= 10
+MaxIdleSeconds		= 300
+MaxClients		= 150
+MaxRequestsPerChild	= 3000
+
+## EnableKeepAlive: Whether or not to allow persistent connections.
+## MaxKeepAliveRequests: The maximum number of requests to allow
+## during a persistent connection. Set to 0 to allow an unlimited amount.
+EnableKeepAlive		= YES
+MaxKeepAliveRequests	= 100
+
+## ConnectionTimeout: Number of seconds to wait for the request from the
+## same client on the same connection. Also used for Keep-Alive timeout.
+ConnectionTimeout	= 10
+
+## IgnoreOverConnection: allows to handle over coming connections
+## than MaxClients setting. set to YES to response 503(SERVICE_UNAVAILABLE)
+## and drop over coming connections immediately.
+IgnoreOverConnection     = NO
+
+## ResponseExpires: number of seconds of contents expiration.
+## Cache-Control and Expires response headers will be appended, if it's
+## greater than 0. Set to 0 to deactivate.
+ResponseExpires		= 0
+
+## DocumentRoot: The directory out of which you will serve your
+## documents. By default, all requests are taken from this directory.
+DocumentRoot		= ${BaseDir}/htdocs
+
+## AllowedMethods: List up methods you want to activate.
+## Set to "ALL" to activate all supported methods.
+## - HTTP methods     : OPTIONS,HEAD,GET,PUT
+## - Extended methods : PROPFIND,PROPPATCH,MKCOL,MOVE,DELETE,LOCK,UNLOCK
+AllowedMethods		= ALL
+#AllowedMethods		= OPTIONS,HEAD,GET
+#AllowedMethods		= OPTIONS,HEAD,GET,PUT,PROPFIND,PROPPATCH,MKCOL,MOVE,DELETE,LOCK,UNLOCK
+
+## DirectoryIndex: sets the filename that will be served if a
+## directory is requested. Set to empty to disable.
+DirectoryIndex		= index.html
+
+## EnableLua: Whether or not to allow LUA script engine.
+## LuaScript: The file which contains LUA script for hooking connection.
+EnableLua		= NO
+LuaScript		= ${ConfDir}/qhttpd.lua
+
+## EnableStatus: Whether or not to allow server status reports.
+## StatusUrl: The URL for retrieving server status reports.
+EnableStatus		= YES
+StatusUrl		= /server-status
+
+## ErrorLog:  The location of the error log file.
+## AccessLog: The location of the access log file.
+## LogRotate: The time period for automatic log file rotation.
+## LogLevel:  Control the number of messages logged to the ErrorLog.
+##            0:SYSTEM, 1:ERROR, 2:WARNING, 3:INFO, 4:DEBUG
+ErrorLog		= ${LogDir}/qhttpd-%Y%m%d.err
+AccessLog		= ${LogDir}/qhttpd-%Y%m%d.log
+LogRotate		= 86400
+LogLevel		= 2
