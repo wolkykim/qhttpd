@@ -1,5 +1,5 @@
-qHttpd Project
-==============
+qHttpd
+======
 
 ## What's qHttpd?
 
@@ -7,12 +7,6 @@ The goal of qHttpd Project is building a highly customizable HTTP server which c
 
 Are you looking for customizable HTTP server for your own software development needs? Are you considering to develop a protocol like a HTTP protocol to use as a inter-communication protol for your software? Do you want to modify standard HTTP protocol and add your own methods to fit in your needs?
 If your answer is YES to one of these questions, qHttpd is just for you. Take a look. It's simple, fast and compact! 
-
-## qHttpd Copyright
-
-All of the deliverable code in qHttpd has been dedicated to the public domain by the authors. Anyone is free to copy, modify, publish, use, compile, sell, or distribute the original qLibc code, either in source code form or as a compiled binary, for any purpose, commercial or non-commercial, and by any means. 
-
-All of the deliverable code in qHttpd has been written from scratch. No code has been taken from other projects or from the open internet. Every line of code can be traced back to its original author. So the qHttpd code base is clean and is not contaminated with licensed code from other projects. 
 
 ## Features
 
