@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Qhttpd : Highly Customizable HTTP server in C (small apache httpd)" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Qhttpd</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/wolkykim/qhttpd">View on GitHub</a>
+
+          <h1 id="project_title">Qhttpd</h1>
+          <h2 id="project_tagline">Highly Customizable HTTP server in C (small apache httpd)</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/wolkykim/qhttpd/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/wolkykim/qhttpd/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="qhttpd" class="anchor" href="#qhttpd"><span class="octicon octicon-link"></span></a>qHttpd</h1>
+
+<h2>
+<a name="whats-qhttpd" class="anchor" href="#whats-qhttpd"><span class="octicon octicon-link"></span></a>What's qHttpd?</h2>
+
+<p>The goal of qHttpd Project is building a highly customizable HTTP server which can be used in many projects not only as a HTTP contents delivery purpose but also an internal protocol purpose. </p>
+
+<p>Are you looking for customizable HTTP server for your own software development needs? Are you considering to develop a protocol like a HTTP protocol to use as a inter-communication protol for your software? Do you want to modify standard HTTP protocol and add your own methods to fit in your needs?
+If your answer is YES to one of these questions, qHttpd is just for you. Take a look. It's simple, fast and compact! </p>
+
+<h2>
+<a name="features" class="anchor" href="#features"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<ul>
+<li>Supports <strong>HTTP/1.1</strong>, HTTP/1.0, HTTP/0.9 </li>
+<li>Supports completely working codebase for standard HTTP methods: OPTIONS, HEAD, GET, PUT(supports chunked transfer-encoding) </li>
+<li>Also supports <strong>WebDAV extension</strong>: PROPFIND, PROPPATCH, MKCOL, MOVE, DELETE, LOCK, UNLOCK </li>
+<li>Includes <strong>C hooking</strong>/customizing samples codes. </li>
+<li>Supports external <strong>LUA script hooking</strong>. </li>
+<li>Supports HTTP Basic Auth Module (refer http_auth.c) </li>
+<li>Supports Virtual Host (refer hook.c) </li>
+<li>You can <strong>easily customize/add methods</strong>. </li>
+<li>Supports server statistics page. </li>
+<li>Supports mime types. </li>
+<li>Supports rotating file log. </li>
+</ul><h2>
+<a name="how-easy-adding-a-new-method" class="anchor" href="#how-easy-adding-a-new-method"><span class="octicon octicon-link"></span></a>How easy adding a new method?</h2>
+
+<h3>
+<a name="sample-adding-a-new-method-in-c" class="anchor" href="#sample-adding-a-new-method-in-c"><span class="octicon octicon-link"></span></a>Sample) Adding a new method in C</h3>
+
+<pre><code>int hookRequestHandler(struct HttpRequest *pReq, struct HttpResponse *pRes) {
+        int nResCode = 0;
+
+        // method hooking
+        if(!strcmp(pReq-&gt;pszRequestMethod, "MY_METHOD")) {
+                nResCode = my_method(pReq, pRes);
+        }
+        return nResCode;
+}
+
+int my_method(struct HttpRequest *pReq, struct HttpResponse *pRes) {
+        const char *txt = "Nice to meet you~"
+
+        httpResponseSetCode(pRes, HTTP_CODE_OK, true);
+        httpHeaderSetStr(pRes-&gt;pHeaders, "MY_HEADER", "Hi~");
+        httpResponseSetContent(pRes, "httpd/plain", txt, strlen(txt));
+}
+</code></pre>
+
+<h3>
+<a name="sample-modifying-response-using-lua-script" class="anchor" href="#sample-modifying-response-using-lua-script"><span class="octicon octicon-link"></span></a>Sample) Modifying response using LUA script</h3>
+
+<pre><code>function responseHandler()
+      local code = response:getCode();
+
+      out = assert(io.open("/tmp/test.log", "a+"));
+      out:write("Response Code = ",code,"\n");
+      out:write("\n");
+      out:close();
+
+      if (code == 200) then
+              response:setHeader("Server", "milk/1.0.0");
+      end
+      return 0;
+end
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Qhttpd maintained by <a href="https://github.com/wolkykim">wolkykim</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
