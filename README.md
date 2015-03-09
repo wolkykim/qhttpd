@@ -24,7 +24,7 @@ If your answer is YES to one of these questions, qHttpd is just for you. Take a 
 
 ## How easy adding a new method?
 
-### Sample) Adding a new method in C
+### Example) Adding a new method in C
 
 ```C
 int hookRequestHandler(struct HttpRequest *pReq, struct HttpResponse *pRes) {
@@ -46,8 +46,8 @@ int my_method(struct HttpRequest *pReq, struct HttpResponse *pRes) {
 }
 ```
 
-### Sample) Modifying response using LUA script
-```C
+### Example) Modifying response using LUA script
+```LUA
 function responseHandler()
       local code = response:getCode();
 
